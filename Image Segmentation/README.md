@@ -83,5 +83,24 @@ they can severely degrade the performance of segmentation algorithms. In general
 2. Implants and clothing (They can distort the image)
 
 There are also other factors that can cause the artifacts in medical imaging, but these are the most common two ones. In general, noise and partial volume 
-effect are not included in the scope of artifacts. Especially, partial volume effect is a commonly observed problem due to the discretization of continuous
-2D imaging signals. 
+effect are not included in the scope of artifacts. Especially, partial volume effect is a commonly observed problem due to the discretization of continuous 2D imaging signals. 
+
+### Ground-Truth Segmentation Masks in Medical Imaging:
+
+To evaluate the performance of segmentation algorithms, we need to have ground-truth masks to be compared with the predictions of those algorithms. At that
+point, experienced clinicians and experts are asked to segment the images manually, and their manual segmentation masks are considered as reference for it. However, this process have 3 important shortcomings:
+
+1. Manual annotation is very tedious and time-consuming, since medical images are 3D volumetric data of many 2D slices. 
+2. It is not easy to get accurate segmentation masks; the experts may make a mistake during manual annotation. At this point, two different sub-problems occur.
+
+- Intra-observer Variability: The manual segmentation made by a clinical expert can vary depending on his/her conditions. (Disagreement between same expert)
+- Inter-observer Variability: The manual segmentation made by different clinical experts can be different from one another. (Disagreement between different experts)
+
+To solve this problem, two main approaches are recommended. If manual segmentation of medical images is carried out by many different experts, we can take average of their variabilities and quantify the uncertainities between those experts. In that way, variability problem is solved and we can end up with the most accurate segmentation masks. To reduce the time-complexity problem, a simple segmentation algorithm can be used. It segments the organs and tissues; the clinicians only correct the mistakes made by the algorithm. 
+
+
+### Why U-Net is very good architecture in segmentation of medical images ?
+
+* The spatial features and low level details of image context would be preserved and transfered to decoder part by skip connections so that they can be used for creating segmentation masks. 
+
+* Skip connections enable the network to have a good gradient flow from decoder to encoder during the backpropagation. 
