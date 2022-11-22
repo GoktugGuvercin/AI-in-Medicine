@@ -58,22 +58,6 @@ Limited contrast is one of the problems that can directly affect the performance
 have similar physical properties, so they can be illustrated with similar intensity values in imaging modalities. In this case, differentiating adjacent 
 but different tissue types becomes harder. Purely intensity-based segmentation algorithms such as region growing are prone to leak into adjacent tissue. 
 
-
-### Confusion Matrix:
-
-
-|                 | `Cond Positive` | `Cond Negative` |
-| ---             |     ---         |      ---        |
-| `Pred Positive` |  True Positive  |  False Positive |
-| `Pred Negative` | False Negative  |  True Negative  |
-
-* TP: Correctly Diagnosed Patients (Hits)
-* TN: Correctly Diagnosed Healthy Subjects (Correct Rejections)
-* FP: False Alarm (type-1 error, causing wrong treatment to be applied to healthy subject)
-* FN: Missing a disease (type-2 error, causing the delay of patient treatment)
-
-Specifically, brain atrophy and breast cancer have a lot of false positive cases. 
-
 ### Imaging Artifacts:
 
 Artifacts in medical images can be described as everything that makes entire image or some part of it deviate from what is present in actual anatomy, and
@@ -98,6 +82,35 @@ point, experienced clinicians and experts are asked to segment the images manual
 
 To solve this problem, two main approaches are recommended. If manual segmentation of medical images is carried out by many different experts, we can take average of their variabilities and quantify the uncertainities between those experts. In that way, variability problem is solved and we can end up with the most accurate segmentation masks. To reduce the time-complexity problem, a simple segmentation algorithm can be used. It segments the organs and tissues; the clinicians only correct the mistakes made by the algorithm. 
 
+
+### Confusion Matrix:
+
+
+|                 | `Cond Positive` | `Cond Negative` |
+| ---             |     ---         |      ---        |
+| `Pred Positive` |  True Positive  |  False Positive |
+| `Pred Negative` | False Negative  |  True Negative  |
+
+* TP: Correctly Diagnosed Patients (Hits)
+* TN: Correctly Diagnosed Healthy Subjects (Correct Rejections)
+* FP: False Alarm (type-1 error, causing wrong treatment to be applied to healthy subject)
+* FN: Missing a disease (type-2 error, causing the delay of patient treatment)
+
+Specifically, brain atrophy and breast cancer have a lot of false positive cases. 
+
+### Evaluation Metrics:
+
+* **Accuracy:** $\frac{TP + TN}{P + N}$ (Trueness, How many predictions made by the model are correct)
+* **Precision:** $\frac{TP}{TP + FP}$ (Positive Predictive Value, How many detections or segmented regions by the model are correct)
+* **Sensitivity:** $\frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
+* **Specificity:** $\frac{TN}{TN + FN}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
+
+
+For the segmentation of anatomical structures in human body by deep learning models, the most-commonly used quantitative performance measurements for evaluating segmentation performance of the model are
+
+1) Classical Confusion Matrix Metrics: Precision and Recall
+2) Overlap-based Measurements: Dice Score and IOU (Jacard Index)
+3) Hausdorff and Mahalanobis Distance
 
 ### Why U-Net is very good architecture in segmentation of medical images ?
 
