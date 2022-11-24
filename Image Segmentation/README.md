@@ -117,3 +117,7 @@ For the segmentation of anatomical structures in human body by deep learning mod
 * The spatial features and low level details of image context would be preserved and transfered to decoder part by skip connections so that they can be used for creating segmentation masks. 
 
 * Skip connections enable the network to have a good gradient flow from decoder to encoder during the backpropagation. 
+
+### Why is vessel and coronary segmentation very important ?
+
+Retinal vessel segmentation provides necessary pieces of information for us to have correct clinical diagnosis of ocular diseases, such as macular degeneration, diabetic retinopathy, and glaucoma. Likewise, some changes on coronary arteries can be identified by coronary segmentation, which may be possible indications of hypertension, myocardial infarction, and coronary atherosclerotic disease.
