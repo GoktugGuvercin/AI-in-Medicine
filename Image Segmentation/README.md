@@ -121,3 +121,57 @@ For the segmentation of anatomical structures in human body by deep learning mod
 ### Why is vessel and coronary segmentation very important ?
 
 Retinal vessel segmentation provides necessary pieces of information for us to have correct clinical diagnosis of ocular diseases, such as macular degeneration, diabetic retinopathy, and glaucoma. Likewise, some changes on coronary arteries can be identified by coronary segmentation, which may be possible indications of hypertension, myocardial infarction, and coronary atherosclerotic disease.
+
+## Classical Image Segmentation Algorithms:
+
+### 1. Thresholding:
+
+Thresholding is the simplest algorithm used to segment the objects from the background. It creates a binary image from gray-scale image. Most of the thresholding algorithms are intensity histogram-based. 
+
+We just create intensity the histogram of pixels and identify the peaks on that histogram plot. Peak regions refer to the most dominant areas on the image. When we choose a threshold value, we would ignores all the pixels in the image whose intensity values are lower than that threshold, and the remaining pixels are regarded as foreground. In that way, segmentation would be performed. While doing thresholding, it is also possible to determine lower and upper thresholds together to particularly select the area between them. 
+
+Advantages:
+
+- It is very simple algorithm.
+- It works quite fast.
+
+Disadvantages:
+
+- It can be easily affected by the noise and artifacts. If the images have so many artifacts, thresholding method can fail. The regions in the image must be homogeneous and distinct. 
+
+- It is quite difficult to find consistent thresholds across images. 
+
+### 2. Region Growing:
+
+Region growing is a recursive segmentation algorithm. First of all, it takes a starting point from the user, which is a pixel coordinate in the image, and mark its neighboring pixels with similar intensity value. Then, its calls itself for the neighboring pixels of all marked pixels. In that way, it grows the region and the pixels with similar intensities would be segmented. At this point, whether the pixels have similar intensity values or not actually depend on pre-defined intensity threshold and starting seed point.
+
+Advantages:
+
+- It is relatively fast approach.
+- Since it looks at the neighbors, it gives us one connected region starting from seed point. In that way, it enables us to track particular continuous regions like white matter in the brain or particular vessel in retinal image. However, tracking same, but separated regions like CSF in the brain requires more than one seed point. 
+
+Disadvantages:
+
+- The regions in the image needs to be homogeneous. Artifacts and noise can easily affect the performance of region growing algorithm. 
+- It depends on the user (semi-automatic algorithm), since seed point is given to the algorithm by the user.
+
+### 3. Graph Cut:
+
+Graph cut is a segmentation algorithm based on max-flow min-cut theorem. It is a semi-automatic algorithm; it expects the use to give scribbles (seed brushes) as reference input. These input values are used to define which regions will be kept and which regions need to be removed (foreground and background) in the image. 
+
+Graph cut algorithm formulates a grid graph on image pixels, and tries to separate this graph into two or more number of disjoint sub-graphs. While doing that, it follows max-flow min-cut theorem. The boundaries between tissues (the edges) are the regions in which the flow from source to sink through the graph is maximized. 
+
+Not only foregorund background binary segmentation but also multiple organ segmentation is possible with graph cut algorithm. 
+
+Advantages:
+
+- It is really fast and also accurate algorithm.
+- It is not direct machine learning approach, but it contains markov random process. 
+- It is reasonably efficient and interactive algorithm.
+
+Disadvantages:
+
+- It is a semi-atuomatic algorithm; unfortunately it depends on the user input.
+- It is difficult to choose its tuning parameters correctly. 
+
+
