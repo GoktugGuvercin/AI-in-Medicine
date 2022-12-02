@@ -1,4 +1,6 @@
 
+## Important Questions about Segmentation in Medical Imaging:
+
 ### Why image segmentation in medical imaging is useful ?
 
 * It enables us to quantify the anatomy of the patients. In other words, carrying out quantitative analysis becomes possible. Then, those measurements can
@@ -19,7 +21,20 @@
 * Shape of anatomical structures
 * Position of anatomical structures
 
-### Partial Volume Effect:
+### Why U-Net is very good architecture in segmentation of medical images ?
+
+* The spatial features and low level details of image context would be preserved and transfered to decoder part by skip connections so that they can be used for creating segmentation masks. 
+
+* Skip connections enable the network to have a good gradient flow from decoder to encoder during the backpropagation. 
+
+### Why is vessel and coronary segmentation very important ?
+
+Retinal vessel segmentation provides necessary pieces of information for us to have correct clinical diagnosis of ocular diseases, such as macular degeneration, diabetic retinopathy, and glaucoma. Likewise, some changes on coronary arteries can be identified by coronary segmentation, which may be possible indications of hypertension, myocardial infarction, and coronary atherosclerotic disease.
+
+
+## Challenges in Medical Image Segmentation:
+
+### 1. Partial Volume Effect:
 
 Partial volume effect is, in some resources, categorized as a type of artifact observed in 3D medical imaging modalities. In volumetric images, 3D 
 continuous objects such as brain or heart is represented by discrete limited amount of voxels. At that time, multiple tissues may contribute to intensity 
@@ -27,7 +42,7 @@ value of a voxel. In other words, more than one tissue correspond to same voxel,
 for partial volume effect is the discretization of 2D image signal in continuous domain. This triggers partial volume effect, and thereby causing blurring 
 of intensity values on tissue boundaries. Thinner slicing can be useful to alleviate this problem. 
 
-### Intensity Inhomogeneity
+### 2. Intensity Inhomogeneity
 
 Intensity inhomogeneity is the situation when intensity values tend to vary instead of being static. In this case, same tissue type can be illustrated 
 with different tones of intensity values. For example, some parts of gray matter in the brain get closer to white color in the scan. This causes shading 
@@ -41,7 +56,7 @@ Intensity inhomogeneity is commonly observed in MRI scans, and in general it is 
 Histogram equalization is one of the methods that can be used to solve this problem; however, it also tend to increase the noise in MRI scans. 7-Tesla and 
 9-Tesla MRIs generate higher resolutional images, but intensity inhomogeneity comes up as a tradeoff. 
 
-### Image Geometry:
+### 3. Image Geometry:
 
 Image geometry is very important to segmentation and registration. In segmentation, segmented voxels of every tissue type is multiplied by the size of 
 one voxel to compute entire volume. At this point, the voxels can be of isotropic or anisotropic. 
@@ -52,13 +67,13 @@ one voxel to compute entire volume. At this point, the voxels can be of isotropi
 One of the main reasons why anisotropic voxels are used is awfulness of patients. In purpose, longer voxels through the depth axis are used to reduce 
 scanning time. This is called "Manhattan voxels". 
 
-### Limited Contrast:
+### 4. Limited Contrast:
 
 Limited contrast is one of the problems that can directly affect the performance of medical imaging segmentation techniques. Different tissues might 
 have similar physical properties, so they can be illustrated with similar intensity values in imaging modalities. In this case, differentiating adjacent 
 but different tissue types becomes harder. Purely intensity-based segmentation algorithms such as region growing are prone to leak into adjacent tissue. 
 
-### Imaging Artifacts:
+### 5. Imaging Artifacts:
 
 Artifacts in medical images can be described as everything that makes entire image or some part of it deviate from what is present in actual anatomy, and
 they can severely degrade the performance of segmentation algorithms. In general, there are two main sources of artifacts in medical images.
@@ -69,7 +84,9 @@ they can severely degrade the performance of segmentation algorithms. In general
 There are also other factors that can cause the artifacts in medical imaging, but these are the most common two ones. In general, noise and partial volume 
 effect are not included in the scope of artifacts. Especially, partial volume effect is a commonly observed problem due to the discretization of continuous 2D imaging signals. 
 
-### Ground-Truth Segmentation Masks in Medical Imaging:
+## Evaluation of Image Segmentation in Medicine:
+
+### 1. Ground-Truth Segmentation Masks in Medical Imaging:
 
 To evaluate the performance of segmentation algorithms, we need to have ground-truth masks to be compared with the predictions of those algorithms. At that
 point, experienced clinicians and experts are asked to segment the images manually, and their manual segmentation masks are considered as reference for it. However, this process have 3 important shortcomings:
@@ -83,7 +100,7 @@ point, experienced clinicians and experts are asked to segment the images manual
 To solve this problem, two main approaches are recommended. If manual segmentation of medical images is carried out by many different experts, we can take average of their variabilities and quantify the uncertainities between those experts. In that way, variability problem is solved and we can end up with the most accurate segmentation masks. To reduce the time-complexity problem, a simple segmentation algorithm can be used. It segments the organs and tissues; the clinicians only correct the mistakes made by the algorithm. 
 
 
-### Confusion Matrix:
+### 2. Confusion Matrix:
 
 
 |                 | `Cond Positive` | `Cond Negative` |
@@ -98,29 +115,31 @@ To solve this problem, two main approaches are recommended. If manual segmentati
 
 Specifically, brain atrophy and breast cancer have a lot of false positive cases. 
 
-### Evaluation Metrics:
+### 3. Evaluation Metrics:
 
 * **Accuracy:** $\frac{TP + TN}{P + N}$ (Trueness, How many predictions made by the model are correct)
 * **Precision:** $\frac{TP}{TP + FP}$ (Positive Predictive Value, How many detections or segmented regions by the model are correct)
 * **Sensitivity:** $\frac{TP}{P} = \frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
 * **Specificity:** $\frac{TN}{N} = \frac{TN}{TN + FP}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
+* **Jacard Index:** $\frac{|A \cap B|}{|A \cup B|} = \frac{TP}{TP + FP + FN}$ (IOU metric, How much predicted mask agree with ground truth mask)
+* **Dice Similarity:** $\frac{2|A \cap B|}{|A| + |B|} = \frac{2TP}{2TP + FP + FN}$ (F1 score, How much predicted mask is similar to ground truth mask)
 
+For the interpretation of jacard index and dice similarity, the following set definitions are generally used:
+
+- $A = TP + FN =$ ground-truth mask
+- $B = TP + FP =$ predicted mask
+- $A \cap B = TP =$ intersection of two masks
+- $A \cup B = A \setminus B + A \cap B + B \setminus A = FN + TP + FP =$ union of two masks
+
+Jacard index (IOU) and dice score are overlap-based evaluation metrics; they are computed with respect to the predicted and ground-truth masks. Both metrics try to understand and measure how much predicted masks agree with ground-truth segmentations; hence, they are positively correlated. In other words, if metric 1 says that classifier X is better than classifier Y, then it is also same for metric 2. The main difference between them is how much they penalize the model in averaging score over a set of inferences. IOU metric focuses on wrong classifications more than dice score. In this case, it is highly possible to get slightly better results when using dice metric. At this point, we can think like while IOU has a tendency closer to worst case performance, F1 score (dice metric) incline to measure something closer to average performance.
+
+The main limitation of overlap measurements is that they are highly sensitive to overall volume size and shape. In case of small structures, like brain lesion, the usage of dice similarity coefficient is not suitable. As the size of anatomical structures shrink, small incorrect segmentations can affect the measurement solutions more. That is why surface distance measurements are also taken into account. 
 
 For the segmentation of anatomical structures in human body by deep learning models, the most-commonly used quantitative performance measurements for evaluating segmentation performance of the model are
 
 1) Classical Confusion Matrix Metrics: Precision and Recall
 2) Overlap-based Measurements: Dice Score and IOU (Jacard Index)
 3) Hausdorff and Mahalanobis Distance
-
-### Why U-Net is very good architecture in segmentation of medical images ?
-
-* The spatial features and low level details of image context would be preserved and transfered to decoder part by skip connections so that they can be used for creating segmentation masks. 
-
-* Skip connections enable the network to have a good gradient flow from decoder to encoder during the backpropagation. 
-
-### Why is vessel and coronary segmentation very important ?
-
-Retinal vessel segmentation provides necessary pieces of information for us to have correct clinical diagnosis of ocular diseases, such as macular degeneration, diabetic retinopathy, and glaucoma. Likewise, some changes on coronary arteries can be identified by coronary segmentation, which may be possible indications of hypertension, myocardial infarction, and coronary atherosclerotic disease.
 
 ## Classical Image Segmentation Algorithms:
 
@@ -173,5 +192,25 @@ Disadvantages:
 
 - It is a semi-atuomatic algorithm; unfortunately it depends on the user input.
 - It is difficult to choose its tuning parameters correctly. 
+
+
+### 4. Random Forest:
+
+Random forest is an ensemble machine learning method that can be used for image segmentation by pixel-wise classification. For example, 3D MRI images with tumorous tissues can be segmented by random forest. To achieve this, the dataset is split into different non-overlapping subsets, and a distinct binary decision tree is built for each of them. 
+
+Each pixel in the image needs to be assigned a class label for segmentation. Context and structure aware features are extracted for every pixel, and they are passed to the decision trees with their corresponding labels. What decision trees does at this point is to learn the relationship between those feature-label pairs and and define the split rules that distinguish the tissues from one another in the most prominent way. These split rules (tests) are optimized over pixel features during the training stage.
+
+To define split strategy in globally optimal way, randomized subset of pixel features are taken into account for training stage. This decreases the variance of forest estimator. Gini, entropy or log-loss metrics can be used as criterion for split rules. 
+
+Advantages:
+
+- It is fully automatic and computationally efficient
+- Since it is an ensemble method, it is quite robust and accurate. 
+- We can decide on what features we will put in, so we can mention about the interpretability and explainability of the model. 
+
+Disadvantages:
+
+- It is a shallow model and cannot guarantee the connectedness unlike region growing algorithm. 
+- The features are not hierarchical 
 
 
