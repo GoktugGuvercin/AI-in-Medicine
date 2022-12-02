@@ -121,7 +121,7 @@ Specifically, brain atrophy and breast cancer have a lot of false positive cases
 * **Precision:** $\frac{TP}{TP + FP}$ (Positive Predictive Value, How many detections or segmented regions by the model are correct)
 * **Sensitivity:** $\frac{TP}{P} = \frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
 * **Specificity:** $\frac{TN}{N} = \frac{TN}{TN + FP}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
-* **Jacard Index:** $\frac{|A \cap B|}{|A \cup B|} = \frac{TP}{TP + FP + FN}$ (IOU metric, How much predicted mask agree with ground truth mask)
+* **Jaccard Index:** $\frac{|A \cap B|}{|A \cup B|} = \frac{TP}{TP + FP + FN}$ (IOU metric, How much predicted mask agree with ground truth mask)
 * **Dice Similarity:** $\frac{2|A \cap B|}{|A| + |B|} = \frac{2TP}{2TP + FP + FN}$ (F1 score, harmonic mean of precision and recall, How much predicted mask is similar to ground truth mask)
 
 For the interpretation of jacard index and dice similarity, the following set definitions are generally used:
@@ -131,8 +131,8 @@ For the interpretation of jacard index and dice similarity, the following set de
 - $A \cap B = TP =$ intersection of two masks
 - $A \cup B = A \setminus B + A \cap B + B \setminus A = FN + TP + FP =$ union of two masks
 
-Jacard index (IOU) and dice score are overlap-based evaluation metrics; they are computed with respect to the predicted and ground-truth masks. Both metrics try to understand and measure how much predicted masks agree with ground-truth segmentations; hence, they are positively correlated. In other words, if metric 1 says that classifier X is better than classifier Y, then it is also same for metric 2. The main difference between them is how much they penalize the model in averaging score over a set of inferences. IOU metric focuses on wrong classifications more than dice score. In this case, it is highly possible to get slightly better results when using dice metric. At this point, we can think like while IOU has a tendency closer to worst case performance, F1 score (dice metric) incline to measure something closer to average performance.
-
+Jacard index (IOU) and dice score are overlap-based evaluation metrics; they are computed with respect to the predicted and ground-truth masks. Both metrics try to understand and measure how much predicted masks agree with ground-truth segmentations; hence, they are positively correlated. In other words, if metric 1 says that classifier X is better than classifier Y, then it is also same for metric 2. The main difference between them is how much they penalize the model in averaging score over a set of inferences. IOU metric focuses on wrong classifications more than dice score. In this case, it is highly possible to get slightly better results when using dice metric. At this point, we can think like while IOU has a tendency closer to worst case performance, F1 score (dice metric) incline to measure something closer to average performance. In fact, both metrics consider total number of incorrect predictions (FP + FN), but increasing numerator and denominator of jaccard by TP, which results in dice score, surpasses the effect of total faults. 
+ 
 The main limitation of overlap measurements is that they are highly sensitive to overall volume size and shape. In case of small structures, like brain lesion, the usage of dice similarity coefficient is not suitable. As the size of anatomical structures shrink, small incorrect segmentations can affect the measurement solutions more. That is why surface distance measurements are also taken into account. 
 
 For the segmentation of anatomical structures in human body by deep learning models, the most-commonly used quantitative performance measurements for evaluating segmentation performance of the model are
