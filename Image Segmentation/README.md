@@ -122,7 +122,7 @@ Specifically, brain atrophy and breast cancer have a lot of false positive cases
 * **Sensitivity:** $\frac{TP}{P} = \frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
 * **Specificity:** $\frac{TN}{N} = \frac{TN}{TN + FP}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
 * **Jacard Index:** $\frac{|A \cap B|}{|A \cup B|} = \frac{TP}{TP + FP + FN}$ (IOU metric, How much predicted mask agree with ground truth mask)
-* **Dice Similarity:** $\frac{2|A \cap B|}{|A| + |B|} = \frac{2TP}{2TP + FP + FN}$ (F1 score, How much predicted mask is similar to ground truth mask)
+* **Dice Similarity:** $\frac{2|A \cap B|}{|A| + |B|} = \frac{2TP}{2TP + FP + FN}$ (F1 score, harmonic mean of precision and recall, How much predicted mask is similar to ground truth mask)
 
 For the interpretation of jacard index and dice similarity, the following set definitions are generally used:
 
