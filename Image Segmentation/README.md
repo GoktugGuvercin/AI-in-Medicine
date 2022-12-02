@@ -102,8 +102,8 @@ Specifically, brain atrophy and breast cancer have a lot of false positive cases
 
 * **Accuracy:** $\frac{TP + TN}{P + N}$ (Trueness, How many predictions made by the model are correct)
 * **Precision:** $\frac{TP}{TP + FP}$ (Positive Predictive Value, How many detections or segmented regions by the model are correct)
-* **Sensitivity:** $\frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
-* **Specificity:** $\frac{TN}{TN + FN}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
+* **Sensitivity:** $\frac{TP}{P} = \frac{TP}{TP + FN}$ (True Positive Rate, Hit Rate, How many objects exist in the image and how many of them are correctly detected by the model)
+* **Specificity:** $\frac{TN}{N} = \frac{TN}{TN + FP}$ (True Negative Rate, What is total background region in ground-truth and how much of it is correctly segmented by the model)
 
 
 For the segmentation of anatomical structures in human body by deep learning models, the most-commonly used quantitative performance measurements for evaluating segmentation performance of the model are
