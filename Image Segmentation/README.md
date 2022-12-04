@@ -213,4 +213,22 @@ Disadvantages:
 - It is a shallow model and cannot guarantee the connectedness unlike region growing algorithm. 
 - The features are not hierarchical 
 
+## The Effect of Deep Models Max-Pooling and Size of Convolution Kernels on Segmentation:
+
+Convolution layers with bigger kernels like 5x5 and 7x7 tend to increase receptive field faster and provide more detailed spatial context about the image. However, many state of the art architectures prefer to use small kernel size such as 3x3. To reach enough receptive field compared to larger kernels, they generally deploy multiple layers.
+
+Receptive Field Comparison:
+
+* 2 3x3 Conv Layers = 1 5x5 Conv Layer
+* 3 3x3 Conv Layers = 1 7x7 Conv Layer
+
+In fact, using multiple conv layers with small kernel instead of single layer with larger kernel introduces some advantages:
+
+1) Being exposed to multiple non-linear activations instead of single one, which makes decision function in the model more discriminative
+
+2) Number of parameters and computations would be decreased. Working with larger kernels especially in 3D domain like medical imaging is a bad decision. Small kernels are highly recommended at this point.
+
+3) Convolution with larger kernels can result in some issues and problems about image borders.
+
+However, training deeper networks is much more difficult. Forward and backward signal may explode or vanish in deep architectures due to the multiplicative effect of constant signal propagation through the layers. At this point, the usage of large kernels enables us to reach sufficient receptive field with a shallower model. Max pooling is another alternative to increase the receptive field, but it provides spatial invariance to the perturbations, which tends to prevent segmentation models from achieving good results. 
 
