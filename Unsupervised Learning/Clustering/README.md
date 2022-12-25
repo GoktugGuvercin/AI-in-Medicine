@@ -35,7 +35,6 @@ unsupervised learning on our medical dataset, it is not possible to evaluate and
 
 * KMeans is one of the most popular clustering algorithms. It tries to separate the samples $X =\\{x_1, \\ x_2, \\ x_3, \\ ..., \\ x_n \\}$ into $K$ number of disjoint groups (clusters) with equal variance, and while doing this it minimizes the cost function called as inertia. Each of these clusters is represented by its centroid $\mu_i$. KMeans clustering can be summarized with the following three steps. 
 
-
   * ***Step 1***: Initial cluster centroids are chosen randomly from dataset. How many centroid we will have depends on the number of clusters in the data. 
 If we are able to visualize the scatter of dataset in 2D or 3D space, we can figure out how many number of clusters we have in that way. Otherwise, 
 elbow-method and application-based rationale can be used. 
@@ -44,8 +43,32 @@ elbow-method and application-based rationale can be used.
 
   * ***Step 3:*** The coordinates of data samples in each cluster are averaged to update the location of corresponding cluster centroid. (Centroid Update)
 
-
 * The steps 2 and 3 are repeated in a couple of iterations. In that way, the centroids get into their correct position. In this scheme, the step 2 and 3 are repeated in a couple of iterations until the centroids get into their correct position. If there is not so much alteration on the displacement of centroids, the algorithm would be converged and thereby being stopped. This process actually refers to the training stage in supervised learning methods. When new data samples are provided for us, they are just used for inference to find out which of these clusters they belong to. 
+
+* Using a cost function for kmeans and simulating its steps 2 and 3 as an optimization process rather than classical iterative algorithm scheme are more preferrable. In that way, we would be able to measure the quality of clustering with corresponding cost value and make a comparison between multiple re-initializations. At this point, inertia enters the picture. 
+
+
+$$
+X = \\{x_1, \\ x_2, \\ x_3, \\ ..., \\ x_n \\} \rightarrow \\: Data
+$$
+
+$$
+\mu = \\{\mu_1, \\ \mu_2, \\ \mu_3, \\ ..., \\ \mu_k \\} \rightarrow \\: Centroids
+$$
+
+$$
+\forall n,k \\, \\, \\, Z_{nk} \in \\{0, 1\\} \\, \\, \\, Z_{nk} \rightarrow \\: Assignments
+$$
+
+$$
+\forall n \\, \sum_{k} \\, Z_{nk} = 1 
+$$
+
+$$
+\displaystyle \min_{\\{Z_{nk}, \\, \mu_k\\}} \sum_{k} \sum_{n} Z_{nk} || x_n - \mu_k||^2
+$$
+
+* K-means cost function is actually 2-step optimization process. First of all, centroid positions are fixed and sum of squared L2 distances between centroids and data samples tries to be minimized over assignment terms $Z_{nk}$. This step is to find the optimal assignments given centroids. In second part, binary values of assignments become fixed, and total cost of distance is minimized by adjusting centroid locations. Total cost tends to decrease monotonically; it is never bigger than the one before. 
 
 * One of the problems commonly observed in the applications of kmeans clustering is that they end up with local minima. In other words, the centroids settle in a position not good enough due to bad initialization. In this case, some data samples that need to be in same cluster would be partitioned into maybe 2 or 3 different clusters. To solve this problem, executing kmeans multiple times with different initializations and choosing the clusters with minimum cost is one of the recommended techniques. However, kmeans++ is more commonly used due to its improved initialization scheme. 
 
