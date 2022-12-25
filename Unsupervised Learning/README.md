@@ -1,0 +1,48 @@
+
+## Clustering:
+
+* Clustering is one of unsupervised learning algorithms used in medical imaging domain. It has an extensive usage area ranging from ilness-based 
+stratification to the classification of pixels to make segmentation. It is an algorithm applicable in both image level and also pixel level. For example,
+categorizing MRI scans into different groups depending on the severity of an illness is in the scope of image-level clustering. However, clustering
+algorithms directly work on the samples with pre-defined features; hence, it requires an additional pre-processing step to extract representative feature
+vectors of the images. Classification of pixels for tissue segmentation is, on the other hand, is an instance of pixel-level clustering scheme. Intensity,
+spatial location, and average intensity of the patch around the pixel are the most commonly-used features to differentiate the pixels from one another for
+clustering. Stratification and soft-tissue segmentation of brain MRIs are the most powerful candidates to these two examples.
+
+* Brain MRI Stratification:
+  * Normal
+  * Mild Cognitive Impairment
+  * Severe Cognitive Impairment (Alzheimer)
+
+* MRI Soft Tissue Segmentation:
+  * Gray Matter
+  * White Matter
+  * Cerebro-Spinal Fluid
+
+
+* The motivation lying behind the usage of clustering algorithm in medical domain is the lack of labels in the dataset. In other words, we have classes in 
+the dataset, but we do not know the labels of images. This prevents us from applying supervised learning; that's why, clustering can be an alternative 
+approach.
+
+* Some diseases may have multiple states, and if we do not know how many states they have, defining labels for them can be quite challenging. Besides, 
+annotating medical dataset can require at least 2 experts in that domain and it is cumbersome process. This increase the tendency to use unsupervised 
+learning more. 
+
+* Clustering algorithms generally do not need to know how many classes there are, which makes them more convenient. However, even if we decide to adapt
+unsupervised learning on our medical dataset, it is not possible to evaluate and assess the performance of the model without labels.
+
+### 1) KMeans:
+
+KMeans is one of the clustering algorithms. It tries to separate the samples $X =\\{x_1, x_2, x_3, ..., x_n \\}$ into $K$ number of disjoint groups with 
+equal variance, and while doing this it minimizes the cost function called as inertia. Each group, also called as cluster, is represented by its centroid
+$\mu_i$. The samples are at first assigned to the closest cluster centroid, and then the position of these centroids are updated with respect to the mean
+of its assigned samples. 
+
+**Step 1**: Initial cluster centroids are chosen randomly from dataset. How many centroid we will have depends on the number of clusters in the data. 
+If we are able to visualize the scatter of dataset in 2D or 3D space, we can figure out how many number of clusters we have in that way. Otherwise, 
+elbow-method and application-based rationale can be used. 
+
+**Step 2:** The pairwise distance between data samples and centroids is computed, and then, data samples are assigned to the centroid that they are closest 
+to. (Assignment Update)
+
+**Step 3:** The coordinates of data samples in each cluster are averaged to update the location of that cluster centroid.
